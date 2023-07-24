@@ -1,13 +1,17 @@
-import { FunctionComponent, useState } from "react";
-import { TextField, InputAdornment, Icon, Button } from "@mui/material";
+import React, { FunctionComponent, useState } from "react";
+import { TextField, Button } from "@mui/material";
 import styles from "./Registro.module.css";
 import { Link, useNavigate } from "react-router-dom";
-
-import { useRegisterMutation } from '../slices/usersApiSlice';
 import { toast } from "react-toastify";
 import { setCredentials } from "../slices/authSlice";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { register } from '../api/auth';
+
+const isValidEmail = (email: string) =>
+  // eslint-disable-next-line no-useless-escape
+  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    email
+  );
 
 const Registro: FunctionComponent = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +20,15 @@ const Registro: FunctionComponent = () => {
   const navigate = useNavigate(); 
   const dispatch = useDispatch();
 
-  const handleRegister = async (e: { preventDefault: () => void; }) => {
+  const handleEmailValidation = (email: string) => {
+    console.log("ValidateEmail was called with", email);
+
+    const isValid = isValidEmail(email);
+
+    return isValid;
+  };
+
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!name || !email || !password) {
@@ -24,18 +36,25 @@ const Registro: FunctionComponent = () => {
       return;
     }
 
+    if (!handleEmailValidation(email)) {
+      toast.error('Por favor, ingresa un email válido.');
+      return;
+    }
+
     try {
       const userData = await register({ name, email, password });
       console.log('Usuario registrado:', userData);
-      dispatch(setCredentials({ ...userData }));
-      navigate('/iniciosesion'); // Redireccionar a la página de inicio después del registro usando el hook useNavigate
+      //dispatch(setCredentials({ ...userData }));
+      
+      navigate('/iniciosesion');
+      toast.info('Usuario registrado exitosamente');
+
     } catch (err) {
       console.error('Error de registro:', err);
       const errorMessage = err as Error;
       toast.error(errorMessage.message || 'Error de registro');
     }
   };
-
 
   return (
     <form onSubmit={handleRegister} className={styles.registro}>
@@ -44,19 +63,15 @@ const Registro: FunctionComponent = () => {
         <div className={styles.registroChild} />
         <img className={styles.registroItem} alt="" src="/rectangle-31@2x.png" />
         <div className={styles.frame} />
-        {/* <div className={styles.regbills1}>RegBills</div> */}
         <div className={styles.registroInner} />
         <b className={styles.registro1}>
           <p className={styles.registro2}>Registro</p>
         </b>
         <div className={styles.yaTienesCuentaContainer}>
           <span>¿Ya tienes cuenta? </span>
-          {/* <b className={styles.iniciaSesin}> Inicia sesión</b> */}
-
           <Link to="/iniciosesion" className={styles.registrate}>
             <b className={styles.iniciaSesin}>Inicia sesión</b>
           </Link>
-
         </div>
         <b className={styles.email}>Email</b>
         <b className={styles.nombre}>Nombre</b>
@@ -76,7 +91,6 @@ const Registro: FunctionComponent = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <b className={styles.nombre}>Nombre</b>
-
         <TextField
           className={styles.registroChild1}
           sx={{ width: 300 }}
@@ -94,7 +108,6 @@ const Registro: FunctionComponent = () => {
           onChange={(e) => setName(e.target.value)}
         />
         <b className={styles.contrasea}>Contraseña</b>
-
         <TextField
           className={styles.registroChild2}
           sx={{ width: 300 }}
@@ -110,8 +123,6 @@ const Registro: FunctionComponent = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
-
         <Button
           className={styles.rectangleButton}
           sx={{ width: 300 }}
@@ -123,8 +134,6 @@ const Registro: FunctionComponent = () => {
         >
           Crear cuenta
         </Button>
-
-
         <img
           className={styles.checkProfileIcon}
           alt=""
@@ -150,7 +159,3 @@ const Registro: FunctionComponent = () => {
 };
 
 export default Registro;
-function dispatch(arg0: { payload: any; type: "auth/setCredentials"; }) {
-  throw new Error("Function not implemented.");
-}
-

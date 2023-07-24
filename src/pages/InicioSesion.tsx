@@ -31,6 +31,7 @@ const InicioSesion: FunctionComponent = () => {
       // Aquí puedes realizar acciones adicionales, como almacenar el token de autenticación en el estado global de la aplicación, redirigir a una página de inicio de sesión exitoso, etc.
       dispatch(setCredentials({ ...userData }));
       navigate('/home'); //home
+      toast.info('Te has logeado exitosamente');
     
     } catch (err) {
       console.error('Error de inicio de sesión:', err);
