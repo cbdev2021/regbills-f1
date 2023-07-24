@@ -90,7 +90,7 @@ const InicioSesion: FunctionComponent = () => {
         name="email"
         id="idEmail"
         label="Email"
-        placeholder="Placeholder"
+        placeholder="Ingrese su correo"
         size="medium"
         margin="none"
         value={email}
@@ -106,7 +106,7 @@ const InicioSesion: FunctionComponent = () => {
         name="password"
         id="idPassword"
         label="Contraseña"
-        placeholder="Placeholder"
+        placeholder="Ingresa tu contraseña"
         size="medium"
         margin="none"
         value={password}

@@ -84,7 +84,7 @@ const Registro: FunctionComponent = () => {
           name="email"
           id="idEmail"
           label="Email"
-          placeholder="Placeholder"
+          placeholder="Ingresa tu correo"
           size="medium"
           margin="none"
           value={email}
@@ -96,12 +96,12 @@ const Registro: FunctionComponent = () => {
           sx={{ width: 300 }}
           color="primary"
           variant="outlined"
-          defaultValue="Introducir acá tu nombre"
+          defaultValue=""
           type="text"
           name="name"
           id="idName"
           label="Name"
-          placeholder="Placeholder"
+          placeholder="Ingresa tu nombre"
           size="medium"
           margin="none"
           value={name}
@@ -117,7 +117,7 @@ const Registro: FunctionComponent = () => {
           name="password"
           id="idPassword"
           label="Contraseña"
-          placeholder="Placeholder"
+          placeholder="Ingresa tu contraseña"
           size="medium"
           margin="none"
           value={password}
