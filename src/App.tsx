@@ -9,6 +9,12 @@ import Registro from "./pages/Registro";
 import InicioSesion from "./pages/InicioSesion";
 import { useEffect } from "react";
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import PrivateRoute from "./components/PrivateRoute";
+import Header from './components/Header';
+
+
 function App() {
   const action = useNavigationType();
   const location = useLocation();
@@ -53,12 +59,31 @@ function App() {
     }
   }, [pathname]);
 
+  // return (
+  //   <Routes>
+  //     <Route path="/" element={<Home />} />
+  //     <Route path="/registro" element={<Registro />} />
+  //     <Route path="/iniciosesion" element={<InicioSesion />} />
+  //   </Routes>
+  // );
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/registro" element={<Registro />} />
-      <Route path="/iniciosesion" element={<InicioSesion />} />
-    </Routes>
+    <>
+
+      <Header />
+      <ToastContainer />
+
+      {/* Rutas y demás contenido */}
+      <Routes>
+        
+        <Route path="/registro" element={<Registro />} />
+        <Route path="/iniciosesion" element={<InicioSesion />} />
+
+        <Route path='' element={<PrivateRoute />}>
+          {/* <Route path='/registro' element={<Registro />} /> */}
+          <Route path="/home" element={<Home />} />
+        </Route>
+      </Routes>
+    </>
   );
 }
 export default App;

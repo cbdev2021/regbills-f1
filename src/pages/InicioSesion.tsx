@@ -1,9 +1,59 @@
 import { FunctionComponent } from "react";
 import { TextField, InputAdornment, Icon, Button } from "@mui/material";
 import styles from "./InicioSesion.module.css";
+//
+import { login } from '../api/auth';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import { setCredentials } from '../slices/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+//
+
 const InicioSesion: FunctionComponent = () => {
+  //
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogin = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      toast.error('Por favor, completa todos los campos.');
+      return;
+    }
+
+    try {
+      const userData = await login(email, password);
+      console.log('Usuario autenticado:', userData);
+      // Aquí puedes realizar acciones adicionales, como almacenar el token de autenticación en el estado global de la aplicación, redirigir a una página de inicio de sesión exitoso, etc.
+      dispatch(setCredentials({ ...userData }));
+      navigate('/home'); //home
+    
+    } catch (err) {
+      console.error('Error de inicio de sesión:', err);
+      // Aquí puedes mostrar mensajes de error al usuario o manejar cualquier error específico de inicio de sesión
+      
+      const errorMessage = err as Error;
+      // if (typeof err === 'string') {
+      //   toast.error(err);  //dice toast.error!!
+      // } else {
+      //   // Handle other types or cases
+      // }
+
+      // const errorMessage = err as string;
+      // toast.info(errorMessage); //se forzó info ver más adelante
+
+      toast.error(errorMessage.message || errorMessage.message); // el segundo esta forzado
+  
+    }
+  };
+  //
+  
   return (
-    <div className={styles.iniciosesion}>
+    <form onSubmit={handleLogin} className={styles.iniciosesion}>
       <div className={styles.iniciosesionChild} />
       <div className={styles.regbills}>RegBills</div>
       <div className={styles.iniciosesionItem} />
@@ -12,7 +62,7 @@ const InicioSesion: FunctionComponent = () => {
         alt=""
         src="/rectangle-31@2x.png"
       />
-      <div className={styles.regbills1}>RegBills</div>
+      {/* <div className={styles.regbills1}>RegBills</div> */}
       <div className={styles.rectangleDiv} />
       <b className={styles.inicioDeSesin}>Inicio de sesión</b>
       <div className={styles.inicioSesinConContainer}>
@@ -22,16 +72,19 @@ const InicioSesion: FunctionComponent = () => {
         </p>
       </div>
       <div className={styles.noTienesCuentaContainer}>
-        <span>¿No tienes cuenta?</span>
-        <b className={styles.registrate}> Registrate</b>
+        <span>¿No tienes cuenta? </span>
+        {/* <b className={styles.registrate}> Registrate</b> */}
+        <Link to="/registro" className={styles.registrate}>
+          <b className={styles.registrate}>Registrate</b>
+        </Link>
       </div>
       <b className={styles.email}>Email</b>
+      
       <TextField
         className={styles.rectangleTextfield}
         sx={{ width: 300 }}
         color="primary"
         variant="outlined"
-        defaultValue="your@email.mail"
         type="text"
         name="email"
         id="idEmail"
@@ -39,6 +92,8 @@ const InicioSesion: FunctionComponent = () => {
         placeholder="Placeholder"
         size="medium"
         margin="none"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <b className={styles.contrasea}>Contraseña</b>
       <TextField
@@ -46,7 +101,6 @@ const InicioSesion: FunctionComponent = () => {
         sx={{ width: 300 }}
         color="primary"
         variant="outlined"
-        defaultValue="Introducir acá tu contraseña"
         type="password"
         name="password"
         id="idPassword"
@@ -54,6 +108,8 @@ const InicioSesion: FunctionComponent = () => {
         placeholder="Placeholder"
         size="medium"
         margin="none"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
       />
       <Button
         className={styles.rectangleButton}
@@ -62,9 +118,12 @@ const InicioSesion: FunctionComponent = () => {
         name="iniciar"
         id="idIniciar"
         color="primary"
+        type="submit"
       >
         Iniciar sesión
       </Button>
+
+
       <img
         className={styles.checkProfileIcon}
         alt=""
@@ -82,8 +141,12 @@ const InicioSesion: FunctionComponent = () => {
           <p className={styles.inicioSesinConTuCuentaDe}>Privacidad</p>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
 export default InicioSesion;
+function dispatch(arg0: any) {
+  throw new Error("Function not implemented.");
+}
+

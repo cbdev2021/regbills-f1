@@ -7,7 +7,7 @@ const Home: FunctionComponent = () => {
       <div className={styles.homeChild} />
       <img className={styles.homeItem} alt="" src="/rectangle-31@2x.png" />
       <div className={styles.frame} />
-      <div className={styles.regbills1}>RegBills</div>
+      {/* <div className={styles.regbills1}>RegBills</div> */}
       <div className={styles.homeInner} />
       <b className={styles.bienvenidoARegbillsContainer}>
         <p className={styles.bienvenidoA}>Bienvenido a</p>
