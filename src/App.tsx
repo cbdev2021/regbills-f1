@@ -68,16 +68,13 @@ function App() {
   // );
   return (
     <>
-
       <Header />
-      <ToastContainer />
+      {/* <ToastContainer /> */}
 
       {/* Rutas y demás contenido */}
-      <Routes>
-        
+      <Routes>        
         <Route path="/registro" element={<Registro />} />
         <Route path="/iniciosesion" element={<InicioSesion />} />
-
         <Route path='' element={<PrivateRoute />}>
           {/* <Route path='/registro' element={<Registro />} /> */}
           <Route path="/home" element={<Home />} />
